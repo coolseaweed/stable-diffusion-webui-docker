@@ -12,6 +12,16 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git reset --hard d1f3637a5a944d0607b899babd8ff11d87100503 && \
   pip install -r requirements.txt
 
+# ComfyUI manager (custom nodes)
+RUN cd ${ROOT}/custom_nodes && \
+  git clone https://github.com/ltdrdata/ComfyUI-Manager.git && \
+  cd ComfyUI-Manager && \
+  pip install -r requirements.txt
+
+# IPAdapter (custom nodes)
+RUN cd ${ROOT}/custom_nodes && \
+  git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+
 WORKDIR ${ROOT}
 COPY . /docker/
 RUN chmod u+x /docker/entrypoint.sh && cp /docker/extra_model_paths.yaml ${ROOT}
