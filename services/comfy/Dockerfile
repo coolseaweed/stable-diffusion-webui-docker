@@ -2,7 +2,14 @@ FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN apt-get update && apt-get install -y git && apt-get clean
+# Install dependency
+RUN apt-get update && apt-get install -y \
+  git \
+  libgl1-mesa-glx libglib2.0-0 && \
+  apt-get clean
+
+COPY ./requirements.txt /opt/requirements.txt
+RUN pip install -r /opt/requirements.txt
 
 ENV ROOT=/stable-diffusion
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -11,6 +18,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git checkout master && \
   git reset --hard d1f3637a5a944d0607b899babd8ff11d87100503 && \
   pip install -r requirements.txt
+
+
 
 WORKDIR ${ROOT}
 COPY . /docker/

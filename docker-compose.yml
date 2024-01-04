@@ -5,7 +5,6 @@ x-base_service: &base_service
     - "${WEBUI_PORT:-7860}:7860"
   volumes:
     - &v1 /mnt/hdd0/prj/stable_diffusion/data:/data
-    - &v2 ./output:/output
   stop_signal: SIGKILL
   tty: true
   deploy:
@@ -62,7 +61,9 @@ services:
     build: ./services/comfy/
     image: sd-comfy:6
     environment:
-      - CLI_ARGS=
+      - CLI_ARGS=--lowvram
+    # command: bash
+    restart: always
 
   comfy-cpu:
     <<: *comfy

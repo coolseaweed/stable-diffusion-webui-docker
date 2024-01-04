@@ -4,3 +4,8 @@
 # VSCode specific
 *.code-workspace
 /.vscode
+
+
+intput
+output/*
+test_hf
